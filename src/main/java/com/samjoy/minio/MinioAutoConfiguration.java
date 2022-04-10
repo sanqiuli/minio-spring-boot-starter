@@ -3,6 +3,7 @@ package com.samjoy.minio;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
+import io.minio.errors.MinioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,7 +32,7 @@ public class MinioAutoConfiguration {
     private MinioProperties minioProperties;
 
     @Bean
-    public MinioClient minioClient() throws Exception {
+    public MinioClient minioClient() throws MinioException {
         // 使用MinIO服务的url(或称为endpoint)，Access key和Secret key创建一个MinioClient对象
         log.info("开始与Minio服务建立连接，Url为{},Access key为{}", minioProperties.getAccessKey(), minioProperties.getSecretKey());
         MinioClient minioClient = MinioClient.builder().endpoint(minioProperties.getUrl()).credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey()).build();
@@ -47,7 +48,7 @@ public class MinioAutoConfiguration {
                 log.info("Bucket: {} 创建成功", minioProperties.getBucket());
             }
         } catch (Exception e) {
-            throw new Exception("创建桶失败", e);
+            throw new MinioException("创建桶失败");
         }
         return minioClient;
     }

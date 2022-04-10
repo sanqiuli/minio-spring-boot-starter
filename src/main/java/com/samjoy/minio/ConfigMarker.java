@@ -6,7 +6,5 @@ package com.samjoy.minio;
  * @author Wenjie Li
  * @date 2022/4/7 20:17
  */
-
-
-public class ConfigMarker {
+interface ConfigMarker {
 }
